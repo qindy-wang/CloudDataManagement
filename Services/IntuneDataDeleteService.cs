@@ -26,12 +26,16 @@ namespace CloudDataManagement
             if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(tenantId)
                 && !string.IsNullOrEmpty(clientSecret))
             {
-                await _intuneDeleteService.DeleteDeviceManagementScripts(clientId, tenantId, clientSecret);
-                await _intuneDeleteService.DeleteDeviceShellScripts(clientId, tenantId, clientSecret);
-                await _intuneDeleteService.DeleteSecurityBaselines(clientId, tenantId, clientSecret);
-                await _intuneDeleteService.DeleteEndpointDetections(clientId, tenantId, clientSecret);
-                await _intuneDeleteService.DeleteManagedApps(clientId, tenantId, clientSecret);
-                await _intuneDeleteService.DeleteManagedDevices(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteDeviceManagementScripts(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteDeviceShellScripts(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteSecurityBaselines(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteEndpointDetections(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteManagedApps(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteManagedDevices(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteAndroidApps(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteCompliancePolicies(clientId, tenantId, clientSecret);
+                //await _intuneDeleteService.DeleteAutopilotDeploymentProfiles(clientId, tenantId, clientSecret);
+                await _intuneDeleteService.DeleteConfigurationPolicies(clientId, tenantId, clientSecret);
             }
             else {
                 Console.WriteLine($"Invliad configuration information, client id: {clientId}, tenant id: {tenantId}, client secret: {clientSecret}");

@@ -16,5 +16,16 @@ namespace CloudDataManagement.Interface
         //App Configuration policy
         Task DeleteManagedApps(string clientId, string tenantId, string clientSecret);
         Task DeleteManagedDevices(string clientId, string tenantId, string clientSecret);
+
+        //Mobile Apps
+        Task DeleteAndroidApps(string clientId, string tenantId, string clientSecret);
+
+        Task DeleteCompliancePolicies(string clientId, string tenantId, string clientSecret);
+
+        //autopilot deployment profiles
+        Task DeleteAutopilotDeploymentProfiles(string clientId, string tenantId, string clientSecret);
+
+        //Device Configuration policy
+        Task DeleteConfigurationPolicies(string clientId, string tenantId, string clientSecret);
     }
 }

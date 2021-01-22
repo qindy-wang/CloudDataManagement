@@ -139,5 +139,92 @@ namespace CloudDataManagement.Imp
             }
             Console.WriteLine($"Delete  App configuations(managed devices) finish.");
         }
+
+        public async Task DeleteAndroidApps(string clientId, string tenantId, string clientSecret)
+        {
+            var graphClient = GraphClient.GetInstance(clientId, tenantId, clientSecret);
+
+            var apps = await graphClient.DeviceAppManagement.MobileApps
+                .Request()
+                .Filter("(microsoft.graph.managedApp/appAvailability eq null or microsoft.graph.managedApp/appAvailability eq 'lineOfBusiness' or isAssigned eq true)")
+                .GetAsync();
+            Console.WriteLine($"Start to delete mobile apps, count: {apps.Count}.");
+            foreach (var app in apps)
+            {
+                try
+                {
+                    Console.WriteLine($"  display name :{app.DisplayName}.");
+                    await graphClient.DeviceAppManagement.MobileApps[app.Id].Request().DeleteAsync();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"  Skipe to delete mobile app, display name :{app.DisplayName}.");
+                }
+            }
+            Console.WriteLine($"Delete mobile app finish.");
+        }
+
+        public async Task DeleteCompliancePolicies(string clientId, string tenantId, string clientSecret)
+        {
+            var graphClient = GraphClient.GetInstance(clientId, tenantId, clientSecret);
+            var policies = await graphClient.DeviceManagement.DeviceCompliancePolicies.Request().GetAsync();
+            Console.WriteLine($"Start to delete compliance policies, count: {policies.Count}.");
+            foreach (var policy in policies)
+            {
+                try
+                {
+                    Console.WriteLine($"  display name :{policy.DisplayName}.");
+                    await graphClient.DeviceManagement.DeviceCompliancePolicies[policy.Id].Request().DeleteAsync();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"  Skipe to delete compliance policy, display name :{policy.DisplayName}.");
+                }
+            }
+            Console.WriteLine($"Delete compliance policy finish.");
+        }
+
+        public async Task DeleteAutopilotDeploymentProfiles(string clientId, string tenantId, string clientSecret)
+        {
+            var graphClient = GraphClient.GetInstance(clientId, tenantId, clientSecret);
+
+            var profiles = await graphClient.DeviceManagement.WindowsAutopilotDeploymentProfiles
+                .Request()
+                .GetAsync();
+            Console.WriteLine($"Start to delete autopilot deployment profiles, count: {profiles.Count}.");
+            foreach (var profile in profiles)
+            {
+                try
+                {
+                    Console.WriteLine($"  display name :{profile.DisplayName}.");
+                    await graphClient.DeviceManagement.WindowsAutopilotDeploymentProfiles[profile.Id].Request().DeleteAsync();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"  Skipe to delete autopilot deployment profile, display name :{profile.DisplayName}.");
+                }
+            }
+            Console.WriteLine($"Delete autopilot deployment profiles finish.");
+        }
+
+        public async Task DeleteConfigurationPolicies(string clientId, string tenantId, string clientSecret)
+        {
+            var graphClient = GraphClient.GetInstance(clientId, tenantId, clientSecret);
+            var policies = await graphClient.DeviceManagement.ConfigurationPolicies.Request().GetAsync();
+            Console.WriteLine($"Start to delete device configuation policy, count: {policies.Count}.");
+            foreach (var policy in policies)
+            {
+                try
+                {
+                    Console.WriteLine($"  display name :{policy.Name}.");
+                    await graphClient.DeviceManagement.ConfigurationPolicies[policy.Id].Request().GetAsync();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"  Skipe to delete device configuation policy, display name :{policy.Name}.");
+                }
+            }
+            Console.WriteLine($"Delete device configuation policy finish.");
+        }
     }
 }
