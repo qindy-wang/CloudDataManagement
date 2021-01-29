@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Graph;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,5 +43,40 @@ namespace CloudDataManagement.Extension
             new TargetData(){ Id = 3, Name="rose", Address ="SH", Job ="DEV2", Phone="113", Age=22, Manager ="james", Title ="P6"},
             new TargetData(){ Id = 4, Name="james", Address ="SZ", Job ="DEV3", Phone="114", Age=23, Manager ="james", Title ="P5"},
         };
+    }
+
+    public class WindowsAutopilotDeploymentProfileYamlModel
+    {
+        public string Id { get; set; }
+
+        //public string ODataType { get; set; }
+
+        public string Description { get; set; }
+
+        public string DeviceNameTemplate { get; set; }
+
+        public WindowsAutopilotDeviceType? DeviceType { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public bool? EnableWhiteGlove { get; set; }
+
+        public WindowsEnrollmentStatusScreenSettings EnrollmentStatusScreenSettings { get; set; }
+
+        public bool? ExtractHardwareHash { get; set; }
+
+        public string Language { get; set; }
+
+        public OutOfBoxExperienceSettings OutOfBoxExperienceSettings { get; set; }
+    }
+
+    public class OutOfBoxExperienceSettings
+    {
+        public WindowsDeviceUsageType? DeviceUsageType { get; set; }
+        public bool? HideEscapeLink { get; set; }
+        public bool? HideEULA { get; set; }
+        public bool? HidePrivacySettings { get; set; }
+        public bool? SkipKeyboardSelectionPage { get; set; }
+        public WindowsUserType? UserType { get; set; }
     }
 }

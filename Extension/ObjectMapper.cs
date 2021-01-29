@@ -195,6 +195,91 @@ namespace CloudDataManagement.Extension
             }
             return targetDic.Values;
         }
+
+        public static IEnumerable<TTarget> MapListV2<TSource, TTarget>(this IEnumerable<TSource> sources)
+        {
+            var targets = new List<TTarget>();
+            Type targetType = typeof(TTarget);
+            var targetProps = targetType.GetProperties(BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance);
+            foreach (var source in sources)
+            {
+                var newTarget = Activator.CreateInstance(targetType);
+                var sourceProps = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance).Where(p => p.CanWrite);
+                foreach (var tp in targetProps)
+                {
+                    var sourceProp = sourceProps.FirstOrDefault(sp => sp.Name.Equals(tp.Name));
+                    if (sourceProp.PropertyType.Equals(tp.PropertyType))
+                    {
+                        tp.SetValue(newTarget, sourceProp.GetValue(source, null), null);
+                    }
+                    else 
+                    {
+                        if (tp.PropertyType.BaseType.Name.Equals("Object", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var targetObj = Activator.CreateInstance(tp.PropertyType);
+                            sourceProp.GetValue(source, null).MapV2(targetObj);
+                            tp.SetValue(newTarget, targetObj, null);
+                        }
+                        else 
+                        {
+                            //Not Support the case property with same name but different type
+                        }
+                    }
+                }
+                targets.Add((TTarget)newTarget);
+            }
+            return targets;
+        }
+
+        public static TTarget MapV2<TSource, TTarget>(this TSource source, TTarget target)
+        {
+            if (source is null)
+                return target;
+
+            var targetProps = target.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance);
+
+            var sourceProps = source.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance)
+                .Where(p => p.CanWrite);
+
+            foreach (var targetProp in targetProps)
+            {
+                try
+                {
+                    var sourceProp = sourceProps.FirstOrDefault(sp => sp.Name.Equals(targetProp.Name));
+                    if (sourceProp != null)
+                    {
+                        if (targetProp.PropertyType.Equals(sourceProp.PropertyType))
+                        {
+                            targetProp.SetValue(target, sourceProp.GetValue(source, null), null);
+                        }
+                        else
+                        {
+                            if (targetProp.PropertyType.BaseType.Name.Equals("Object", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var targetObj = Activator.CreateInstance(targetProp.PropertyType);
+                                targetObj = sourceProp.GetValue(source, null).MapV2(targetObj);
+                                targetProp.SetValue(target, targetObj, null);
+                            }
+                            else 
+                            {
+                                //Not Support the case property with same name but different type
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //_logger.Debug($"The property is not exist in tenant yaml file, property name: {sourceProp.Name}");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return target;
+        }
     }
 
     public class IngorePropertyAttribute : Attribute

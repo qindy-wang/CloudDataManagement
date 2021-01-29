@@ -19,12 +19,12 @@ namespace CloudDataManagement
 
         public static GraphServiceClient GetInstance(string clientId, string tennatId, string clientSecret)
         {
-            if (graphClient == null)
-            {
-                lock (obj)
-                {
-                    if (graphClient == null)
-                    {
+            //if (graphClient == null)
+            //{
+            //    lock (obj)
+            //    {
+            //        if (graphClient == null)
+            //        {
                         IConfidentialClientApplication confidentialClientApplication = ConfidentialClientApplicationBuilder
                             .Create(clientId)
                             .WithTenantId(tennatId)
@@ -34,9 +34,9 @@ namespace CloudDataManagement
                         ClientCredentialProvider authProvider = new ClientCredentialProvider(confidentialClientApplication);
 
                         graphClient = new GraphServiceClient(authProvider);
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
             return graphClient;
         }
     }

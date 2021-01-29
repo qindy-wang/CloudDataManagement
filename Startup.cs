@@ -1,5 +1,9 @@
 ﻿using CloudDataManagement.Imp;
+using CloudDataManagement.Imp.AAD;
+using CloudDataManagement.Inteface;
+using CloudDataManagement.Inteface.AAD;
 using CloudDataManagement.Interface;
+using CloudDataManagement.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,7 +31,12 @@ namespace CloudDataManagement
             var services = new ServiceCollection();
             services.AddSingleton<IConfigurationRoot>(configuration);
             services.AddTransient<IIntuneDeleteService, IntuneDeleteService>();
-            services.AddTransient<IDeleteService, IntuneDataDeleteService>();
+            services.AddTransient<IIntuneService, IntuneDataService>();
+
+            services.AddTransient<IAADSelectService, AADSelectService>();
+            services.AddTransient<IAADUpdateService, AADUpdateService>();
+            services.AddTransient<IAADAddService, AADAddService>();
+            services.AddTransient<IAADService, AADDataService>();
             return services;
         }
     }

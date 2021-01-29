@@ -7,15 +7,20 @@ using System.Threading.Tasks;
 
 namespace CloudDataManagement
 {
-    public class IntuneDataDeleteService : IDeleteService
+    public class IntuneDataService : IIntuneService
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IIntuneDeleteService _intuneDeleteService;
 
-        public IntuneDataDeleteService(IConfigurationRoot configuration, IIntuneDeleteService intuneDeleteService)
+        public IntuneDataService(IConfigurationRoot configuration, IIntuneDeleteService intuneDeleteService)
         {
             this._configuration = configuration;
             this._intuneDeleteService = intuneDeleteService;
+        }
+
+        public Task Add()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task Delete()
@@ -40,6 +45,16 @@ namespace CloudDataManagement
             else {
                 Console.WriteLine($"Invliad configuration information, client id: {clientId}, tenant id: {tenantId}, client secret: {clientSecret}");
             }
+        }
+
+        public Task Select()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }
